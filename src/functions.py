@@ -1,5 +1,13 @@
 from helper_functions import *
 import os, time
+from enum import Enum
+
+# Guess result type
+class GT(Enum):
+  NULL = 0 # accidental or space
+  GOOD = 1 # good guess
+  BAD = 2 # bad guess
+  WIN = 3 # winning guess or state
 
 def intro(version: str) -> None:
   cls(1)
@@ -25,4 +33,7 @@ def cls(wait: int = 0) -> None:
   else:  
     time.sleep(wait)
   os.system('cls')
+
+def contains_numbers(text: str) -> bool:
+  return any(char.isdigit() for char in text)
   

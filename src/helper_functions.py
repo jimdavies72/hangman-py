@@ -65,7 +65,7 @@ def pad_text(text: str, max_length: int, pad_pos: str) -> str:
 def box_text(text):
   # func:   creates a red border of * around lines of text
   # params: formatted text --> ""hello\nthis is the\nend of the world"" 
-
+  
   try:
     text_list = text.splitlines()
     max_length = list_longest(text_list) + 4
