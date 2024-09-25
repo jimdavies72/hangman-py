@@ -1,0 +1,9 @@
+{
+  "guesses": 10,
+  "guess_phrase": "HELLO WORD",
+  "clue": "hiya globe",
+  "phrase_contrast": "There are",
+  "word_plural": "words",
+  "guess_contrast": "guesses",
+  "word_count": 5
+}
