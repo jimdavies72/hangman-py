@@ -1,5 +1,4 @@
-import inspect, math
-import string as s
+import inspect, math, string as s
 
 # foreground colours
 sgr = '\033[1;3'
@@ -103,3 +102,30 @@ def remove_punctuation(text: str, include_spaces: bool = False) -> str:
 
   except Exception as e:
     print(ex(e, stack))
+
+def sort_separated_string(string: str, separator = None) -> str:
+  # func:   sort a string that has a separator character
+  # params: string to sort
+  #         separator character, default is None
+  
+  try:
+    if separator is None:
+      separator = ""
+    return separator.join(sorted(string.lower()))
+  
+  except Exception as e:
+    print(ex(e, stack))
+
+def contains_numbers(text: str) -> bool:
+  # func:   check if a string contains numbers
+  # params: string to check
+  
+  try:
+
+    if len(text) == 0:
+      return False
+    
+    return any(char.isdigit() for char in text)
+  
+  except Exception as e:
+    print(ex(e, stack))  

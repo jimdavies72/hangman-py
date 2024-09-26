@@ -10,7 +10,6 @@ class GT(Enum):
   WIN = 3 # winning guess or state
 
 def intro(version: str) -> None:
-  cls(1)
   text = f"Welcome to the Hangman Game!\nVersion {version} by James Davies\n_____\n|    |\n|   \@/\n|    |\n|   / \\\n-------"
   
   print(box_text(text))
@@ -34,6 +33,15 @@ def cls(wait: int = 0) -> None:
     time.sleep(wait)
   os.system('cls')
 
-def contains_numbers(text: str) -> bool:
-  return any(char.isdigit() for char in text)
+def is_number_state_good(numbers_allowed: bool, contains_numbers: bool ) -> bool:
+  if numbers_allowed and contains_numbers:
+    # numbers are allowed and value contains numbers
+    return True
+  elif numbers_allowed and contains_numbers == False:
+    # numbers are allowed and value does not contain numbers
+    return True
+  elif numbers_allowed == False and contains_numbers:
+    return False
+  else:
+    return True
   
