@@ -129,3 +129,17 @@ def contains_numbers(text: str) -> bool:
   
   except Exception as e:
     print(ex(e, stack))  
+    
+def whitespace(number = 1) -> str:
+  # func:   just add in some blnk lines
+  # params: number of lines
+  try:
+    if number == 0:
+      return
+    elif number == 1:
+      print("")
+    else:  
+      print("\n" * (number - 1))
+    
+  except Exception as e:
+    print(ex(e, stack)) 

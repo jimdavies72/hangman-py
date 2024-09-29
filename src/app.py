@@ -1,30 +1,33 @@
-from game_set_up import *
-  
-def phrase_display(phrase: str) -> list:
-  # how the phrase will be displayed on screen
-  display_phrase = []
-  for letter in phrase:
-    if letter == " ":
-      display_phrase.append("/ ")
-    else:
-      display_phrase.append("_ ")
-  
-  return display_phrase
+from game_rules import *
+from game_state import set_game_state
 
-def check_guess(phrase: str, include_numbers: bool, guess: str, letters_used: str) -> int:
+def display_game_state(game_state: dict) -> None:
+  whitespace()
+  
+  command(f"The word/phrase is: {''.join(game_state['display_list'])}")
+  whitespace()
+  
+  command(f"Guesses remaining: {game_state['remaining_guesses']}")
+  whitespace()
+  
+  if len(game_state['letters_used']) > 0:
+    command(f"Letters used: {game_state['letters_used']}")
+    whitespace()
+
+def check_guess(rules: dict, guess: str, letters_used: str) -> int:
   if is_number_state_good(include_numbers, contains_numbers(guess)):
     if len(guess) > 1:
-      # phrase guess
-      if guess == phrase:
+      # phrase guess  
+      if guess == rules["guess_phrase"]:
         return GT.WIN
       else:
         return GT.BAD
-    elif len(guess) == 0:
+    elif len(guess) == 0 or guess == " ":
       # accidental return or "" after invalid chars removed. allow as a non-guess
       return GT.NULL
     elif guess in letters_used:
       return GT.NULL
-    elif guess not in phrase:
+    elif guess not in rules["guess_phrase"]:
       return GT.BAD
     else:
       # was a good guess
@@ -32,61 +35,75 @@ def check_guess(phrase: str, include_numbers: bool, guess: str, letters_used: st
   else:
     return GT.NULL
 
-def guess_phase(game_params: dict) -> bool:
-  is_winner = False
-  letters_used = ""
-  
-  while game_params["guesses"] > 0 and not is_winner:
-    command(f"Guesses remaining: {game_params['guesses']}")
-    
-    if len(letters_used) > 0:
-      command(f"Letters used: {letters_used}")
-      
-    # We dont want to have a space or punctiation as a guess as these are not allowed in the game
-    guess = remove_punctuation(question("Enter your guess:").upper(), True)
-    
-    if guess == "*QUIT":
-      break
-    else:
-      
-        match check_guess(game_params["guess_phrase"], game_params["include_numbers"], guess, letters_used):
-        
-          case GT.WIN:
-            is_winner = True
-          case GT.GOOD:
-            letters_used = letters_used + guess
-          case GT.BAD:
-            game_params["guesses"] -= 1
-            warning("Bad guess :'(")
-            letters_used = letters_used + guess
-          case GT.NULL:
-            pass
-    cls(2)
-    
-  return is_winner
-
-def hangman(game_params: dict) -> bool:
+def hangman(rules: dict) -> list:
   try:
-    phrase_list = game_params["guess_phrase"].split()
-    guessed_list = game_params["guess_phrase"].replace(" ", "")
-    display_list = phrase_display(game_params["guess_phrase"])
+    is_end_game = False
+    result = ""
     
-    command(f"The word/phrase is: {"".join(display_list)} (Type *quit at any time to quit playing)")
-    
-    return guess_phase(game_params)
+    game_state = set_game_state(rules)
+  
+    while game_state["remaining_guesses"] > 0 and not is_end_game:
+      display_game_state(game_state)
+      whitespace()
+      
+      guess = question("Enter your guess:").upper()
+      if guess == "*QUIT":
+        result = "quit"
+        break
+      guess = remove_punctuation(guess.strip(), False)
+        
+      match check_guess(rules, guess, game_state["letters_used"]):
+        case GT.GOOD:
+          # remove all occurances of the letter in the phrase
+          game_state["letters_used"] += guess
+          game_state["remaining_letters_list"] = game_state["remaining_letters_list"].replace(guess.upper(), "")
+  
+          if len(game_state["remaining_letters_list"]) == 0:
+            result = "win"
+            is_end_game = True
+          else:
+            for i, letter in enumerate(rules["guess_phrase"]):
+              if letter == guess:
+                game_state["display_list"][i] = guess + " "
+        case GT.BAD:
+          whitespace()
+          warning("Incorrect guess")
+          if len(guess) == 1:
+            game_state["letters_used"] +=  guess
+            
+          game_state["remaining_guesses"] -= 1 
+          if game_state["remaining_guesses"] == 0:
+            result = "lose"
+        case GT.WIN:
+          is_end_game = True
+          result = "win"
+        case GT.NULL:
+          pass
+      
+      cls(1)
+      
+    return [result, rules["guess_phrase"]]
   
   except Exception as e:
     print(ex(e, inspect.stack()[0][3]))
 
 def main():
+  cls()
   intro(2.0)
   cls(2)
   
-  if hangman(set_game_params()):
-    text = "Congratulations you win!"
-  else:
-    text = "Unlucky you lose!"
+  result: list = hangman(set_rules())
   
-  print(box_text(text))
+  whitespace()
+  
+  if result[0] == "win":
+    text = f"Congratulations you win!\nThe word/phrase was: {result[1]}"
+  elif result[0] == "lose":
+    text = f"Unlucky you lose!\nThe word/phrase was: {result[1]}"
+  else:
+    text = f"Thanks for playing, sorry to see you go\nThe word/phrase was: {result[1]}"
     
+  print(box_text(text))
+  whitespace(2)
+  
 main()

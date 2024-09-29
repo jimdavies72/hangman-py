@@ -1,9 +1,19 @@
-{
-  "guesses": 10,
-  "guess_phrase": "HELLO WORD",
-  "clue": "hiya globe",
-  "phrase_contrast": "There are",
-  "word_plural": "words",
-  "guess_contrast": "guesses",
-  "word_count": 5
-}
+[
+  {
+    "guesses": 10,
+    "include_numbers": true,
+    "guess_phrase": "HELLO WORLD",
+    "word_count": 5,
+    "clue": "hiya globe",
+    "phrase_contrast": "There are",
+    "word_plural": "words",
+    "guess_contrast": "guesses"
+  },
+  {
+    "letters_used": "ADFL",
+    "display_list": ["H ", "_ ", "_ ", "_ ", "O ", "/ ", "_ ", "O ", "_ ", "_ ", "D "],
+    "remaining_letters_list": ["H", "E", "W", "R", "D"],
+    "remaining_guesses": 8
+
+  }
+]

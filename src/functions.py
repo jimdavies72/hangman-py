@@ -26,6 +26,10 @@ def command(text: str) -> None:
   if len(text) >= 1:
     print(f"{YELLOW}{text}{NC}")
 
+def information(text: str) -> None:
+  if len(text) >= 1:
+    print(f"{GREEN}{text}{NC}")
+
 def cls(wait: int = 0) -> None:
   if type(wait) != int:
     time.sleep(0)
@@ -45,3 +49,13 @@ def is_number_state_good(numbers_allowed: bool, contains_numbers: bool ) -> bool
   else:
     return True
   
+def phrase_display(phrase: str) -> list:
+  # how the phrase will be displayed on screen
+  display_phrase = []
+  for letter in phrase:
+    if letter == " ":
+      display_phrase.append("/ ")
+    else:
+      display_phrase.append("_ ")
+  
+  return display_phrase
