@@ -1,14 +1,20 @@
-# Hangman
+# Repo: hangman-py
+![Static Badge](https://img.shields.io/badge/Dev_status-Development-green)
+![Static Badge](https://img.shields.io/badge/Test_status-Untested-red)
 
-repo: hangman-py
+## Reason: To develop a simple two player hangman type game written in Python
 
+### Description
+
+This repo represents the Python code of the simple game Hangman.
 includes the code I originally wrote yonks and yonks ago for comparison (hangman_v1_code.py in /docs)
 
-## A simple two player game written in Python
 
-Written by James Davies
+### Project Tech Stack:
 
-### Todo:
+- Python
+
+### To-do List
 
 - [ ] Unit tests to be added
 - [ ] Code refactoring
